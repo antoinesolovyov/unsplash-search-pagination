@@ -19,18 +19,17 @@ const App = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [photos, setPhotos] = useState([]);
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(24);
+  const [perPage, setPerPage] = useState(16);
 
-  const request = (query1, page1) => {
+  const request = (query, page) => {
     unsplash.search
-      .photos(query1, page1, perPage)
+      .photos(query, page, perPage)
       .then(response => response.json())
       .then(json => {
         const { total, total_pages, results } = json;
         setTotal(total);
         setTotalPages(total_pages);
         setPhotos(results);
-
         console.log(json);
       });
   };
@@ -43,23 +42,22 @@ const App = () => {
     console.log(query, page);
   }, [query, page]);
 
-  const onPhotosSearch = query1 => {
-    console.log(query, query1);
-    setQuery(query1);
+  const onPhotosSearch = query => {
+    setQuery(query);
     setPage(1);
-    request(query1, 1);
+    request(query, 1);
   };
 
-  const onPageClick = li => {
-    if (li === "<" && page > 1) {
+  const onPaginationClick = liText => {
+    if (liText === "←" && page > 1) {
       request(query, page - 1);
       setPage(page - 1);
-    } else if (li === ">" && page < totalPages) {
+    } else if (liText === "→" && page < totalPages) {
       request(query, page + 1);
       setPage(page + 1);
-    } else if (li !== "<" && li !== ">") {
-      request(query, li);
-      setPage(+li);
+    } else if (Number.parseInt(liText)) {
+      request(query, liText);
+      setPage(+liText);
     }
   };
 
@@ -70,11 +68,13 @@ const App = () => {
       </Header>
       <Main photos={photos} unsplash={unsplash} />
       <Footer>
-        <Pagination
-          page={page}
-          totalPages={totalPages}
-          pageOnClickHandler={onPageClick}
-        />
+        {!!total && (
+          <Pagination
+            page={page}
+            totalPages={totalPages}
+            onPaginationClick={onPaginationClick}
+          />
+        )}
       </Footer>
     </>
   );

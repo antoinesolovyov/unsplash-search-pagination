@@ -1,8 +1,5 @@
 import React, { useState } from "react";
 
-import SearchIcon from "./icons/search.svg";
-import CameraIcon from "./icons/camera.svg";
-
 import "./Search.css";
 
 export default function Search(props) {
