@@ -19,7 +19,7 @@ const App = () => {
   const [totalPages, setTotalPages] = useState(0);
   const [photos, setPhotos] = useState([]);
   const [page, setPage] = useState(1);
-  const [perPage, setPerPage] = useState(16);
+  const [perPage, setPerPage] = useState(24);
 
   const request = (query, page) => {
     unsplash.search
